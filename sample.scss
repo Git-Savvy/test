@@ -1,0 +1,80 @@
+// Long SCSS sample: variables, mixins, nesting, partial BEM-ish style.
+
+$radius: 14px;
+$border: rgba(255, 255, 255, 0.12);
+$card: rgba(255, 255, 255, 0.06);
+$muted: rgba(242, 242, 244, 0.72);
+
+@mixin card {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 16px;
+}
+
+@mixin focusRing {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(120, 150, 255, 0.25);
+}
+
+.dashboard {
+  display: grid;
+  gap: 14px;
+
+  &__header {
+    @include card;
+    h1 { margin: 0 0 6px; font-size: 22px; }
+    p { margin: 0; color: $muted; }
+  }
+
+  &__grid {
+    display: grid;
+    gap: 12px;
+
+    @media (min-width: 760px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .panel {
+    @include card;
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+
+      &--danger {
+        border-left: 4px solid rgba(255, 0, 0, 0.4);
+        padding-left: 12px;
+      }
+    }
+
+    input, select {
+      border: 1px solid $border;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.25);
+      color: white;
+
+      &:focus { @include focusRing; }
+      &:disabled { opacity: 0.6; }
+    }
+
+    button {
+      border-radius: $radius;
+      border: 1px solid $border;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.25);
+      color: white;
+
+      &:hover { filter: brightness(1.08); cursor: pointer; }
+      &:active { transform: translateY(1px); }
+      &:disabled { opacity: 0.5; cursor: not-allowed; }
+    }
+  }
+}

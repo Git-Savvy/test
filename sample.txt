@@ -1,0 +1,70 @@
+LONG TEXT SAMPLE
+================
+
+This file is intentionally long and includes:
+- headings
+- lists
+- separators
+- “fake code”
+- log snippets
+- mixed punctuation
+- some unicode: café, naïve, مرحبا, 東京
+
+------------------------------------------------------------
+SECTION 1: NOTES
+------------------------------------------------------------
+
+1) The indexer must skip unwanted directories:
+   - node_modules
+   - dist
+   - build
+   - .git
+   - coverage
+
+2) The indexer must skip unwanted extensions:
+   - images (.png .jpg .webp)
+   - archives (.zip .tar .gz)
+   - binaries (.exe .dll .so)
+   - media (.mp4 .mp3)
+
+3) The indexer should still record that the file existed.
+
+------------------------------------------------------------
+SECTION 2: PSEUDO CODE (NOT REAL CODE)
+------------------------------------------------------------
+
+function fake() {
+  if (x > 0) {
+    return "hello";
+  } else {
+    return "world";
+  }
+}
+
+This is text. It should NOT be parsed as AST.
+But it should still be chunked.
+
+------------------------------------------------------------
+SECTION 3: SAMPLE LOGS
+------------------------------------------------------------
+
+[INFO] scanning: repos/owner/name
+[INFO] file_count=431 skipped=98
+[WARN] parse_failed file=src/broken.ts line=88
+[WARN] encoding_issue file=data/strange.txt replaced_chars=17
+[INFO] stored symbols=2234 chunks=1010
+[INFO] done in 14.2s
+
+------------------------------------------------------------
+SECTION 4: LONG PARAGRAPH
+------------------------------------------------------------
+
+A long paragraph is useful to test chunk boundaries. Many chunkers
+split by lines, but others split by sentence length or token length.
+A robust chunking approach should avoid slicing in the middle of
+important structures (like headings) while still preventing very
+large chunks from exceeding embedding limits. Additionally, the
+chunker should retain enough context for retrieval, such as the
+source file path and an approximate section label.
+
+END.

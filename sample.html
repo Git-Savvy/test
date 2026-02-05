@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Indexer Dashboard (Long Sample)</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Indexer Dashboard</h1>
+      <p class="muted">
+        This page is intentionally long to test text extraction, script blocks, and nested markup.
+      </p>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Search</h2>
+        <p>
+          Search symbols, chunks, files, and metadata. The indexer output is normalized across languages.
+        </p>
+
+        <form id="searchForm">
+          <label>
+            Query
+            <input name="q" placeholder="type to search..." />
+          </label>
+
+          <label>
+            Language
+            <select name="lang">
+              <option value="">All</option>
+              <option value="python">Python</option>
+              <option value="typescript">TypeScript</option>
+              <option value="java">Java</option>
+              <option value="go">Go</option>
+              <option value="rust">Rust</option>
+            </select>
+          </label>
+
+          <label>
+            Options
+            <select name="mode">
+              <option value="symbols">Symbols</option>
+              <option value="chunks">Chunks</option>
+              <option value="files">Files</option>
+            </select>
+          </label>
+
+          <button type="submit">Go</button>
+        </form>
+
+        <h3>Output</h3>
+        <pre id="out">{ "status": "idle" }</pre>
+      </section>
+
+      <section class="card">
+        <h2>Example Results</h2>
+        <ul>
+          <li><strong>RepoIndexer</strong> (class) — src/indexer.py</li>
+          <li><strong>embed_document</strong> (function) — src/embedder.py</li>
+          <li><strong>RepoScanner</strong> (class) — src/scanner.ts</li>
+          <li><strong>BigListPanel</strong> (component) — ui/panel.tsx</li>
+        </ul>
+
+        <h3>Notes</h3>
+        <p>
+          HTML contains many elements that should be ignored by an AST parser, but included in a text index.
+          Scripts and styles might be extracted differently depending on your rules.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Long Content Section</h2>
+        <p>
+          Large HTML sections are common in docs and dashboards. Chunking needs to preserve headings and
+          keep paragraphs intact when possible. Avoid splitting in the middle of tag boundaries.
+        </p>
+        <p>
+          A second paragraph to force chunk boundaries. A third paragraph. A fourth paragraph. A fifth paragraph.
+          This is intentionally repetitive but still realistic for large docs.
+        </p>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("searchForm");
+      const out = document.getElementById("out");
+
+      function normalize(s) {
+        return String(s ?? "").trim();
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const fd = new FormData(form);
+        const payload = Object.fromEntries(fd.entries());
+
+        // nested logic edge cases
+        const q = normalize(payload.q);
+        const lang = normalize(payload.lang);
+        const mode = normalize(payload.mode);
+
+        if (!q && !lang) {
+          out.textContent = JSON.stringify({ ok: false, error: "empty query" }, null, 2);
+          return;
+        }
+
+        if (q.length > 2048) {
+          out.textContent = JSON.stringify({ ok: false, error: "query too long" }, null, 2);
+          return;
+        }
+
+        const result = {
+          ok: true,
+          request: { q, lang, mode },
+          hint: "This is a static demo output."
+        };
+
+        out.textContent = JSON.stringify(result, null, 2);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+{
+  "repo": "owner/name",
+  "commit": "abc123",
+  "options": {
+    "embed": true,
+    "strict_parsing": false,
+    "max_file_size_mb": 2,
+    "chunking": {
+      "strategy": "lines",
+      "lines_per_chunk": 30,
+      "overlap_lines": 3,
+      "max_chunks_per_file": 2000
+    },
+    "rules": {
+      "skip_dirs": ["node_modules", ".git", "dist", "build", "coverage", ".venv"],
+      "skip_ext": [".png", ".jpg", ".pdf", ".zip", ".tar", ".gz"],
+      "include_ext": [".py", ".js", ".ts", ".tsx", ".md", ".yml", ".yaml", ".json"]
+    }
+  },
+  "files": [
+    {
+      "path": "src/indexer.py",
+      "language": "python",
+      "hash": "sha256:111111",
+      "size_bytes": 12345,
+      "symbols": [
+        {
+          "kind": "class",
+          "name": "RepoIndexer",
+          "range": [10, 210],
+          "children": [
+            { "kind": "function", "name": "__init__", "range": [12, 28] },
+            { "kind": "function", "name": "index_document", "range": [40, 120] }
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": "docs/README.md",
+      "language": "markdown",
+      "hash": "sha256:222222",
+      "size_bytes": 5432,
+      "sections": ["Overview", "Pipeline", "FAQ"],
+      "errors": []
+    },
+    {
+      "path": "src/broken.ts",
+      "language": "typescript",
+      "hash": "sha256:333333",
+      "size_bytes": 999,
+      "symbols": [],
+      "errors": [
+        {
+          "type": "ParseError",
+          "message": "Unexpected token at line 88",
+          "line": 88,
+          "recovery": "text_scan"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "files_scanned": 431,
+    "files_indexed": 333,
+    "files_skipped": 98,
+    "symbols_total": 2234,
+    "chunks_total": 1010
+  }
+}

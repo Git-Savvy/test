@@ -1,0 +1,44 @@
+---
+kind: Config
+version: 1
+index:
+  languages:
+    ast: [python, javascript, typescript, java, go, rust]
+    text: [md, rst, txt, yaml, toml, ini, html, css, scss]
+  limits:
+    max_file_size_mb: 2
+    max_symbols_per_file: 5000
+    max_chunks_per_file: 2000
+  fallback:
+    on_parse_error: "text_scan"
+    on_timeout: "partial"
+    on_oom: "skip_file"
+  output:
+    store_errors: true
+    store_raw_text: false
+    store_snippets: true
+---
+kind: Secrets
+version: 1
+note: |
+  This document simulates secrets but uses placeholders.
+  Do not commit real secrets.
+values:
+  api_key: "${API_KEY}"
+  token: "${TOKEN}"
+  db_password: "${DB_PASSWORD}"
+---
+kind: Jobs
+version: 1
+jobs:
+  - name: index_repo
+    schedule: "0 */6 * * *"
+    enabled: true
+    args:
+      embed: true
+      detect_minified: true
+  - name: cleanup
+    schedule: "0 3 * * *"
+    enabled: true
+    args:
+      keep_days: 30
