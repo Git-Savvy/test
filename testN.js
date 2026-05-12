@@ -2,4 +2,5 @@
 //////////////////////
 //////////neww NNN
 //solve this issue
-//issue 18 solve
+//issue20
+
